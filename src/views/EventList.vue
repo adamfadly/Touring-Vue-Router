@@ -1,11 +1,7 @@
 <template>
   <h1>Events for Good</h1>
   <div class="events">
-    <event-card
-      v-for="event in events"
-      :key="event.id"
-      :event="event"
-    ></event-card>
+    <EventCard v-for="event in events" :key="event.id" :event="event" />
 
     <div class="pagination">
       <router-link
@@ -31,7 +27,6 @@
 import EventCard from '@/components/EventCard.vue'
 import EventService from '@/services/EventService.js'
 import { watchEffect } from 'vue'
-
 export default {
   name: 'EventList',
   props: ['page'],
@@ -41,11 +36,12 @@ export default {
   data() {
     return {
       events: null,
-      totalPath: 0
+      totalEvents: 0
     }
   },
   created() {
     watchEffect(() => {
+      this.events = null
       EventService.getEvents(2, this.page)
         .then(response => {
           this.events = response.data
@@ -71,7 +67,6 @@ export default {
   flex-direction: column;
   align-items: center;
 }
-
 .pagination {
   display: flex;
   width: 290px;
@@ -81,11 +76,9 @@ export default {
   text-decoration: none;
   color: #2c3e50;
 }
-
 #page-prev {
   text-align: left;
 }
-
 #page-next {
   text-align: right;
 }
